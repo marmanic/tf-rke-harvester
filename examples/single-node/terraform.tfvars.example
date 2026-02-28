@@ -1,0 +1,21 @@
+# Harvester
+cluster_namespace = "default"
+cluster_name     = "rke-single"
+network_name     = "default"
+network_namespace = "harvester-public"
+image_name       = "ubuntu-22.04"
+image_namespace  = "harvester-public"
+
+# Node size
+node_cpu        = 2
+node_memory     = "4Gi"
+node_disk_size  = "40Gi"
+
+# SSH (RKE provider uses private key to connect to nodes; public key is injected via cloud-init)
+ssh_username         = "ubuntu"
+ssh_public_key       = "ssh-rsa AAAAB3... your-key"
+ssh_private_key_path = "~/.ssh/id_rsa"
+
+# Optional
+kubernetes_version = ""  # RKE provider default if empty
+fetch_kubeconfig   = true

@@ -1,0 +1,28 @@
+# Single-node RKE cluster on Harvester (1 node, all roles: etcd + controlplane + worker)
+# Requires Harvester and RKE providers to be configured (e.g. via env or root module).
+
+module "rke" {
+  source = "../.."
+
+  cluster_namespace = var.cluster_namespace
+  cluster_name      = var.cluster_name
+
+  network_name      = var.network_name
+  network_namespace = var.network_namespace
+  image_name       = var.image_name
+  image_namespace  = var.image_namespace
+
+  node_count = 1
+
+  node_cpu       = var.node_cpu
+  node_memory    = var.node_memory
+  node_disk_size = var.node_disk_size
+
+  ssh_username         = var.ssh_username
+  ssh_public_key       = var.ssh_public_key
+  ssh_private_key_path = var.ssh_private_key_path
+
+  kubernetes_version = var.kubernetes_version
+  fetch_kubeconfig   = var.fetch_kubeconfig
+  vm_tags           = var.vm_tags
+}

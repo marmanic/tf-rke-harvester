@@ -1,0 +1,22 @@
+# Harvester
+cluster_namespace  = "default"
+cluster_name      = "rke-three"
+network_name      = "default"
+network_namespace = "harvester-public"
+image_name        = "ubuntu-22.04"
+image_namespace   = "harvester-public"
+
+# Node size (same for all 3 nodes)
+node_cpu        = 2
+node_memory     = "4Gi"
+node_disk_size  = "40Gi"
+
+# SSH (RKE provider uses private key to connect to nodes; public key is injected via cloud-init)
+ssh_username         = "ubuntu"
+ssh_public_key       = "ssh-rsa AAAAB3... your-key"
+ssh_private_key_path = "~/.ssh/id_rsa"
+
+# Optional: stable endpoint for HA (e.g. load balancer in front of the 3 node IPs on port 6443)
+server_endpoint    = ""
+kubernetes_version = ""
+fetch_kubeconfig   = true

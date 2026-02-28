@@ -1,0 +1,23 @@
+#cloud-config
+ssh_authorized_keys:
+  - "${ssh_public_key}"
+
+users:
+  - name: "${ssh_username}"
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - docker.io
+  - curl
+
+runcmd:
+  - systemctl enable --now docker
+  - usermod -aG docker ${ssh_username}
+
+%{ if additional_userdata != "" ~}
+${additional_userdata}
+%{ endif ~}
