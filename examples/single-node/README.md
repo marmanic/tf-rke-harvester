@@ -10,7 +10,7 @@ Creates one Harvester VM and installs a single-node RKE (RKE1) Kubernetes cluste
 
 ## Usage
 
-1. Configure the Harvester provider (e.g. in a `provider.tf` or via environment):
+1. Configure the Harvester provider in this example’s `providers.tf` (or via environment):
 
    ```hcl
    provider "harvester" {

@@ -9,6 +9,32 @@ Creates Harvester virtual machines and uses the [RKE Terraform provider](https:/
 1. **Harvester provider** creates `node_count` VMs with cloud-init that installs Docker and configures SSH.
 2. **RKE provider** connects to each VM via SSH and installs Kubernetes (RKE1) in Docker containers, with each node running etcd, controlplane, and worker.
 
+```mermaid
+flowchart LR
+  user[User] --> tfRoot[TerraformRoot]
+  tfRoot --> harvesterProvider[HarvesterProvider]
+  tfRoot --> rkeProvider[RKEProvider]
+  harvesterProvider --> harvesterCluster[HarvesterCluster]
+  rkeProvider --> rkeCluster[RKECluster]
+  harvesterCluster --> rkeCluster
+```
+
+## Harvester provider configuration
+
+This module relies on the official `harvester/harvester` Terraform provider to talk to your Harvester cluster. The provider **must be configured in the root module** (for example, in a `providers.tf` file) before using this module or any of the examples.
+
+A minimal configuration using a local Harvester kubeconfig looks like:
+
+```hcl
+provider "harvester" {
+  kubeconfig = "~/.kube/harvester.yaml" # path to your Harvester kubeconfig
+}
+```
+
+Other authentication options (such as URL/token and environment variables) are documented in the official Harvester provider docs on the Terraform Registry. Refer to those docs if you need a different auth method.
+
+The `rancher/rke` provider is declared in the module’s `terraform` block and normally does not require additional configuration: it connects to the Harvester VMs over SSH using the `ssh_private_key_path` you pass into the module.
+
 ## Requirements
 
 - VMs must be reachable via SSH from the machine running Terraform (same network or port forwarding).
