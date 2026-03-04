@@ -99,6 +99,7 @@ resource "rke_cluster" "cluster" {
   }
 
   kubernetes_version = var.kubernetes_version != "" ? var.kubernetes_version : null
+  enable_cri_dockerd = true
 
   ssh_agent_auth = var.ssh_agent_auth
   
