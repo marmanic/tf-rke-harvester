@@ -16,6 +16,12 @@ ssh_username         = "ubuntu"
 ssh_public_key       = "ssh-rsa AAAAB3... your-key"
 ssh_private_key_path = "~/.ssh/id_rsa"
 
+# Optional: static IP (omit to use DHCP)
+# node_ips              = ["10.0.0.11"]
+# node_ip_prefix_length  = 24
+# node_gateway           = "10.0.0.1"
+# node_dns_servers       = []
+
 # Optional
 kubernetes_version = ""  # RKE provider default if empty
 fetch_kubeconfig   = true

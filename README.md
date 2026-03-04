@@ -55,6 +55,33 @@ For multi-node clusters, use a stable API endpoint:
 
 If you use `wait_for_lease = true`, the VM image should have `qemu-guest-agent` (common on Harvester management networks).
 
+## Static IP addresses
+
+By default, nodes receive IPs from the Harvester network’s IPAM (e.g. DHCP). To assign explicit static IPs to each node, set the following variables:
+
+- **node_ips** – List of static IPv4 addresses, one per node (index matches node index). When omitted or empty, behavior is unchanged and nodes use DHCP.
+- **node_ip_prefix_length** – Prefix length for the node subnet (e.g. `24` for `/24`). Used only when `node_ips` is set. Default: `24`.
+- **node_gateway** – Default gateway for the nodes. Required when `node_ips` is set.
+- **node_dns_servers** – Optional list of DNS server IPs. Used only when `node_ips` is set.
+
+Example for a 3-node cluster with static IPs:
+
+```hcl
+module "rke" {
+  source = "..."
+
+  node_count             = 3
+  node_ips               = ["10.0.0.11", "10.0.0.12", "10.0.0.13"]
+  node_ip_prefix_length  = 24
+  node_gateway           = "10.0.0.1"
+  # node_dns_servers     = ["10.0.0.2"]  # optional
+
+  # other required inputs ...
+}
+```
+
+Static IPs are applied via cloud-init network config on the first interface (`eth0`). Ensure the addresses are valid for your Harvester network and do not conflict with DHCP ranges. For static-only setups you can leave `wait_for_lease = false`.
+
 ## RKE1 end of life
 
 RKE/RKE1 reaches end of life on **July 31, 2025**. Consider migrating to RKE2 or another distribution for new clusters. See [Rancher’s announcement](https://rke.docs.rancher.com/).

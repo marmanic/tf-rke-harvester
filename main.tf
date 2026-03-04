@@ -55,6 +55,7 @@ resource "harvester_virtualmachine" "node" {
     var.vm_tags,
   )
 
+  # For static IPs (node_ips set), wait_for_lease is typically false; cloud-init sets the address.
   network_interface {
     name           = "nic-1"
     network_name   = data.harvester_network.vm.id
@@ -77,6 +78,19 @@ resource "harvester_virtualmachine" "node" {
       ssh_public_key      = var.ssh_public_key
       additional_userdata = var.cloud_init_additional_userdata
     })
+    network_data = length(var.node_ips) > 0 ? templatefile("${path.module}/templates/cloud-init-network-static.yaml.tftpl", {
+      ip_address    = var.node_ips[count.index]
+      prefix_length = var.node_ip_prefix_length
+      gateway       = var.node_gateway
+      dns_servers   = var.node_dns_servers
+    }) : null
+  }
+
+  lifecycle {
+    precondition {
+      condition     = (length(var.node_ips) == 0) || (var.node_gateway != "")
+      error_message = "node_gateway is required when node_ips is set."
+    }
   }
 }
 

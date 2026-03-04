@@ -39,6 +39,16 @@ Creates one Harvester VM and installs a single-node RKE (RKE1) Kubernetes cluste
    kubectl get nodes
    ```
 
+### Optional: static IP
+
+To give the single node a fixed IP instead of DHCP, set `node_ips`, `node_ip_prefix_length`, and `node_gateway` in `terraform.tfvars` (see [module README](../../README.md#static-ip-addresses)). Example:
+
+```hcl
+node_ips              = ["10.0.0.11"]
+node_ip_prefix_length = 24
+node_gateway          = "10.0.0.1"
+```
+
 ## Inputs
 
 | Name | Description | Default |
@@ -54,3 +64,7 @@ Creates one Harvester VM and installs a single-node RKE (RKE1) Kubernetes cluste
 | node_memory | Memory per node | 4Gi |
 | node_disk_size | Root disk size | 40Gi |
 | fetch_kubeconfig | Write kubeconfig to file | true |
+| node_ips | Optional list of static IPs (one per node) | [] |
+| node_ip_prefix_length | Prefix length for static IPs (e.g. 24) | 24 |
+| node_gateway | Default gateway (required when node_ips set) | "" |
+| node_dns_servers | Optional DNS servers for static IPs | [] |

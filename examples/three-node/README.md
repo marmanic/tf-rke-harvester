@@ -26,7 +26,9 @@ Creates three Harvester VMs and installs an RKE (RKE1) Kubernetes cluster with e
 
 3. (Optional) For HA access, set `server_endpoint` to a load balancer or VIP in front of the three node IPs (e.g. TCP port 6443). Otherwise the kubeconfig will use the first node’s IP.
 
-4. Apply:
+4. (Optional) To use static IPs instead of DHCP, set `node_ips`, `node_ip_prefix_length`, and `node_gateway` (see [module README](../../README.md#static-ip-addresses)). Example: `node_ips = ["10.0.0.11", "10.0.0.12", "10.0.0.13"]`, `node_ip_prefix_length = 24`, `node_gateway = "10.0.0.1"`.
+
+5. Apply:
 
    ```bash
    terraform init
@@ -34,7 +36,7 @@ Creates three Harvester VMs and installs an RKE (RKE1) Kubernetes cluster with e
    terraform apply
    ```
 
-5. Use the cluster:
+6. Use the cluster:
 
    ```bash
    export KUBECONFIG=$(terraform output -raw kubeconfig_path)
@@ -57,3 +59,7 @@ Creates three Harvester VMs and installs an RKE (RKE1) Kubernetes cluster with e
 | node_disk_size | Root disk size | 40Gi |
 | server_endpoint | Optional LB/VIP for API (HA) | "" |
 | fetch_kubeconfig | Write kubeconfig to file | true |
+| node_ips | Optional list of static IPs (one per node) | [] |
+| node_ip_prefix_length | Prefix length for static IPs (e.g. 24) | 24 |
+| node_gateway | Default gateway (required when node_ips set) | "" |
+| node_dns_servers | Optional DNS servers for static IPs | [] |

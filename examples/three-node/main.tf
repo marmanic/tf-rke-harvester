@@ -22,8 +22,12 @@ module "rke" {
   ssh_public_key       = var.ssh_public_key
   ssh_private_key_path = var.ssh_private_key_path
 
-  kubernetes_version = var.kubernetes_version
-  server_endpoint    = var.server_endpoint # optional: LB/VIP for HA
-  fetch_kubeconfig   = var.fetch_kubeconfig
-  vm_tags            = var.vm_tags
+  kubernetes_version     = var.kubernetes_version
+  server_endpoint        = var.server_endpoint # optional: LB/VIP for HA
+  fetch_kubeconfig       = var.fetch_kubeconfig
+  vm_tags                = var.vm_tags
+  node_ips               = var.node_ips
+  node_ip_prefix_length  = var.node_ip_prefix_length
+  node_gateway           = var.node_gateway
+  node_dns_servers       = var.node_dns_servers
 }

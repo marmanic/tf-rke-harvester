@@ -1,0 +1,18 @@
+# Static network config for cloud-init (version 1).
+# Used only when node_ips is set; configures eth0 with the given static IP.
+network:
+  version: 1
+  config:
+    - type: physical
+      name: eth0
+      subnets:
+        - type: static
+          address: ${ip_address}/${prefix_length}
+          gateway: ${gateway}
+%{ if length(dns_servers) > 0 ~}
+    - type: nameserver
+      address:
+%{ for s in dns_servers ~}
+        - ${s}
+%{ endfor ~}
+%{ endif ~}

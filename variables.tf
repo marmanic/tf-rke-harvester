@@ -132,3 +132,36 @@ variable "cloud_init_additional_userdata" {
   type        = string
   default     = ""
 }
+
+# ------------------------------------------------------------------------------
+# Static IP (optional). When node_ips is set, each node gets that IP via cloud-init.
+# ------------------------------------------------------------------------------
+
+variable "node_ips" {
+  description = "Optional list of static IPs, one per node (index matches node index). When empty, nodes use Harvester network IPAM (e.g. DHCP)."
+  type        = list(string)
+  default     = []
+
+  validation {
+    condition     = length(var.node_ips) == 0 || length(var.node_ips) == var.node_count
+    error_message = "When set, node_ips must have exactly node_count entries (one IP per node)."
+  }
+}
+
+variable "node_ip_prefix_length" {
+  description = "Prefix length for node static IPs (e.g. 24 for /24). Used only when node_ips is set."
+  type        = number
+  default     = 24
+}
+
+variable "node_gateway" {
+  description = "Default gateway for node static IPs. Required when node_ips is set."
+  type        = string
+  default     = ""
+}
+
+variable "node_dns_servers" {
+  description = "Optional DNS servers for node static IPs. Used only when node_ips is set."
+  type        = list(string)
+  default     = []
+}

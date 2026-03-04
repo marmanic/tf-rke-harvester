@@ -86,3 +86,27 @@ variable "vm_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "node_ips" {
+  description = "Optional list of static IPs (one per node). Omit for DHCP."
+  type        = list(string)
+  default     = []
+}
+
+variable "node_ip_prefix_length" {
+  description = "Prefix length for static IPs (e.g. 24). Used when node_ips is set."
+  type        = number
+  default     = 24
+}
+
+variable "node_gateway" {
+  description = "Default gateway for static IPs. Required when node_ips is set."
+  type        = string
+  default     = ""
+}
+
+variable "node_dns_servers" {
+  description = "Optional DNS servers for static IPs."
+  type        = list(string)
+  default     = []
+}
