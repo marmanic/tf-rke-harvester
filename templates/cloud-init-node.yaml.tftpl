@@ -13,9 +13,11 @@ package_upgrade: true
 packages:
   - docker.io
   - curl
+  - open-vm-tools
 
 runcmd:
   - systemctl enable --now docker
+  - systemctl enable --now open-vm-tools
   - usermod -aG docker ${ssh_username}
 
 %{ if additional_userdata != "" ~}
