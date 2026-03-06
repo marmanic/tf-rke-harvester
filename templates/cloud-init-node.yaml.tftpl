@@ -1,12 +1,12 @@
 #cloud-config
-ssh_authorized_keys:
-  - "${ssh_public_key}"
-
 users:
   - name: "${ssh_username}"
+    groups: users, admin
     passwd: $6$xuuuMeIYqc29IGP8$RL.tsj4aRjOiukevrtY3ZJaKHggcBTA8Wta1AnHaKMQ3.pvN3/SyLbdVHbtZKooArgAyQtSTvcEGjnDMCq7E3/
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /bin/bash
+    ssh_import_id: 
+      - gh:marmanic
 
 package_update: true
 package_upgrade: true
@@ -14,11 +14,11 @@ package_upgrade: true
 packages:
   - docker.io
   - curl
-  - open-vm-tools
+  - qemu-guest-agent
 
 runcmd:
   - systemctl enable --now docker
-  - systemctl enable --now open-vm-tools
+  - systemctl enable --now qemu-guest-agent.service
   - usermod -aG docker ${ssh_username}
 
 %{ if additional_userdata != "" ~}
